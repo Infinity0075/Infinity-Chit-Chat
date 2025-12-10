@@ -27,17 +27,29 @@ const App = () => {
             isAuthenticated && isOnBoarded ? (
               <HomePage />
             ) : (
-              <Navigate to={isAuthenticated ? "/login" : "/onboarding"} />
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
             )
           }
         />
         <Route
           path="/signup"
-          element={!isAuthenticated ? <SignupPage /> : <Navigate to="/" />}
+          element={
+            !isAuthenticated ? (
+              <SignupPage />
+            ) : (
+              <Navigate to={isOnBoarded ? "/" : "/onboarding"} />
+            )
+          }
         />
         <Route
           path="/login"
-          element={!isAuthenticated ? <LoginPage /> : <Navigate to="/" />}
+          element={
+            !isAuthenticated ? (
+              <LoginPage />
+            ) : (
+              <Navigate to={isOnBoarded ? "/" : "/onboarding"} />
+            )
+          }
         />
         <Route
           path="/notification"
@@ -48,7 +60,15 @@ const App = () => {
         <Route
           path="/onboarding"
           element={
-            isAuthenticated ? <OnBoardingPage /> : <Navigate to="/login" />
+            isAuthenticated ? (
+              !isOnBoarded ? (
+                <OnBoardingPage />
+              ) : (
+                <Navigate to="/" />
+              )
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route

@@ -18,7 +18,9 @@ const SignupPage = () => {
     error,
   } = useMutation({
     mutationFn: signup,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+    },
   });
 
   const handleSignup = (e) => {

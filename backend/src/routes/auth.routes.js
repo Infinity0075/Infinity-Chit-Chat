@@ -14,7 +14,7 @@ router.post("/login", login); //Login page Routes
 router.post("/logout", logout); //Logout page Routes
 
 //Oboarding:
-router.post("/onboard", protectRoute, onBoard);
+router.post("/onboarding", protectRoute, onBoard);
 //check if user is Loged in or Not??
 
 router.get("/me", protectRoute, (req, res) => {
