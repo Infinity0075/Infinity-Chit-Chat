@@ -11,6 +11,7 @@ import PageLoader from './components/PageLoader.jsx'
 import useAuthUser from './hooks/useAuthUser.js'
 import Layout from './components/Layout.jsx'
 import { useThemeStore } from './store/useThemeStore.jsx'
+import FriendsPage from './pages/FriendsPage.jsx'
 
 const App = () => {
   const { theme } = useThemeStore()
@@ -22,22 +23,6 @@ const App = () => {
 
   return (
     <div className='h-screen bg-base-100 text-base-content' data-theme={theme}>
-      {/* Theme toggle (simple + clean) */}
-      {/* <button onClick={() => setTheme("light")} className="btn btn-primary">
-        Switch to LIGHT
-      </button>
-
-      <button onClick={() => setTheme("cupcake")} className="btn btn-secondary">
-        Switch to CUPCAKE
-      </button>
-
-      <button onClick={() => setTheme("cyberpunk")} className="btn btn-accent">
-        Switch to CYBERPUNK
-      </button>
-
-      <button onClick={() => setTheme("dracula")} className="btn btn-warning">
-        Switch to DRACULA
-      </button> */}
       <Routes>
         <Route
           path='/'
@@ -118,6 +103,18 @@ const App = () => {
           element={
             isAuthenticated && isOnBoarded ? (
               <CallPage />
+            ) : (
+              <Navigate to={!isAuthenticated ? '/login' : '/onboarding'} />
+            )
+          }
+        />
+        <Route
+          path='/friends'
+          element={
+            isAuthenticated && isOnBoarded ? (
+              <Layout showSidebar={true}>
+                <FriendsPage />
+              </Layout>
             ) : (
               <Navigate to={!isAuthenticated ? '/login' : '/onboarding'} />
             )
