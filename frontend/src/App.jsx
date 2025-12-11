@@ -9,9 +9,11 @@ import CallPage from "./pages/CallPage.jsx";
 import { Toaster } from "react-hot-toast";
 import PageLoader from "./components/PageLoader.jsx";
 import useAuthUser from "./hooks/useAuthUser.js";
+import Layout from "./components/Layout.jsx";
+import { useThemeStore } from "./store/useThemeStore.jsx";
 
 const App = () => {
-  // console.log(authData);
+  const { theme } = useThemeStore();
   const { isLoading, authUser } = useAuthUser();
   const isAuthenticated = Boolean(authUser);
   const isOnBoarded = authUser?.isOnboarded;
@@ -19,13 +21,31 @@ const App = () => {
   if (isLoading) return <PageLoader />;
 
   return (
-    <div className="h-screen" data-theme="night">
+    <div className="h-screen bg-base-100 text-base-content" data-theme={theme}>
+      {/* Theme toggle (simple + clean) */}
+      {/* <button onClick={() => setTheme("light")} className="btn btn-primary">
+        Switch to LIGHT
+      </button>
+
+      <button onClick={() => setTheme("cupcake")} className="btn btn-secondary">
+        Switch to CUPCAKE
+      </button>
+
+      <button onClick={() => setTheme("cyberpunk")} className="btn btn-accent">
+        Switch to CYBERPUNK
+      </button>
+
+      <button onClick={() => setTheme("dracula")} className="btn btn-warning">
+        Switch to DRACULA
+      </button> */}
       <Routes>
         <Route
           path="/"
           element={
             isAuthenticated && isOnBoarded ? (
-              <HomePage />
+              <Layout showSidebar={true}>
+                <HomePage />
+              </Layout>
             ) : (
               <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
             )
@@ -41,6 +61,7 @@ const App = () => {
             )
           }
         />
+
         <Route
           path="/login"
           element={
@@ -57,6 +78,7 @@ const App = () => {
             isAuthenticated ? <Notification /> : <Navigate to="/login" />
           }
         />
+
         <Route
           path="/onboarding"
           element={
@@ -71,10 +93,12 @@ const App = () => {
             )
           }
         />
+
         <Route
           path="/chat"
           element={isAuthenticated ? <ChatPage /> : <Navigate to="/login" />}
         />
+
         <Route
           path="/call"
           element={isAuthenticated ? <CallPage /> : <Navigate to="/login" />}

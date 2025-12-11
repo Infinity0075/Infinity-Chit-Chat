@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Infinity as InfinityIcon } from "lucide-react";
 import { Link } from "react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { signup } from "../lib/api";
+import useSignUp from "../hooks/useSignup";
+import { useThemeStore } from "../store/useThemeStore.jsx";
+
 const SignupPage = () => {
   const [signupData, setSignupData] = useState({
     fullName: "",
@@ -10,18 +11,21 @@ const SignupPage = () => {
     password: "",
   });
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
-  const {
-    mutate: signupMutation,
-    isPending,
-    error,
-  } = useMutation({
-    mutationFn: signup,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
-    },
-  });
+  // const {
+  //   mutate: signupMutation,
+  //   isPending,
+  //   error,
+  // } = useMutation({
+  //   mutationFn: signup,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["authUser"] });
+  //   },
+  // });
+
+  const { isPending, error, signupMutation } = useSignUp();
+  const { theme } = useThemeStore(); // inherit global theme
 
   const handleSignup = (e) => {
     e.preventDefault();
@@ -29,17 +33,17 @@ const SignupPage = () => {
   };
   return (
     <div
-      className="h-screen flex items-center  justify-center p-4 sm:p-6 md:p-8"
-      data-theme="forest"
+      className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8 bg-base-100 text-base-content"
+      data-theme={theme}
     >
       <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden">
         {/* SIGNUP FORM - LEFT SIDE */}
 
         <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col">
-          {/* LOGO  I have used Infinity icon from lucide-react as logo in place of previous logo*/}
+          {/* LOGO */}
           <div className="mb-4 flex items-center justify-start gap-2">
-            <InfinityIcon className="size-9 text-primary" />
-            <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-linear-to-r from-primary to-secondary tracking-wider">
+            <InfinityIcon className="size-9 text-base-content" />
+            <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
               Infinity Chit-Chat
             </span>
           </div>
