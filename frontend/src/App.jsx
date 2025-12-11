@@ -101,13 +101,27 @@ const App = () => {
         />
 
         <Route
-          path='/chat'
-          element={isAuthenticated ? <ChatPage /> : <Navigate to='/login' />}
+          path='/chat/:id'
+          element={
+            isAuthenticated && isOnBoarded ? (
+              <Layout showSidebar={false}>
+                <ChatPage />
+              </Layout>
+            ) : (
+              <Navigate to={!isAuthenticated ? '/login' : '/onboarding'} />
+            )
+          }
         />
 
         <Route
-          path='/call'
-          element={isAuthenticated ? <CallPage /> : <Navigate to='/login' />}
+          path='/call/:id'
+          element={
+            isAuthenticated && isOnBoarded ? (
+              <CallPage />
+            ) : (
+              <Navigate to={!isAuthenticated ? '/login' : '/onboarding'} />
+            )
+          }
         />
       </Routes>
       <Toaster />
